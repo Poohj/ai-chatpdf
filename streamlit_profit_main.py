@@ -12,6 +12,7 @@ import streamlit as st
 import tempfile
 import os
 from streamlit_extras.buy_me_a_coffee import button
+from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 
 button(username="jocoding", floating=True, width=221)
 
@@ -61,7 +62,9 @@ if uploaded_file is not None:
 
     if st.button('질문하기'):
         with st.spinner('Wait for it...'):
-            llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0, openai_api_key=openai_key)
+            llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0, openai_api_key=openai_key, 
+                            streaming=True, callbacks=[StreamingStdOutCallbackHandler()] ## 스트리밍 옵션
+                            )
             qa_chain = RetrievalQA.from_chain_type(llm,retriever=db.as_retriever())
             result = qa_chain({"query": question})
             st.write(result["result"])

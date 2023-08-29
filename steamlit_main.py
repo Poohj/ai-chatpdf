@@ -20,6 +20,13 @@ import streamlit as st
 import tempfile
 import os
 
+# Add custom CSS to hide the GitHub icon
+hide_github_icon = """
+#GithubIcon {
+  visibility: hidden;
+}
+"""
+
 #제목
 st.title("ChatPDF")
 st.write("---")
